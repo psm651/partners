@@ -1,6 +1,7 @@
 package com.earnmoneynow.partners.module.coupang.service;
 
 import org.apache.commons.codec.binary.Hex;
+import org.springframework.stereotype.Component;
 
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
@@ -10,6 +11,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.TimeZone;
 
+@Component
 public final class HmacGenerator {
     private static final String ALGORITHM = "HmacSHA256";
     private static final Charset STANDARD_CHARSET = Charset.forName("UTF-8");
