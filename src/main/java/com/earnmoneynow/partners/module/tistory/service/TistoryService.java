@@ -2,6 +2,8 @@ package com.earnmoneynow.partners.module.tistory.service;
 
 import com.earnmoneynow.partners.global.util.WebClientService;
 import com.earnmoneynow.partners.module.tistory.dto.TistoryContentResponseDto;
+import com.earnmoneynow.partners.module.tistory.dto.TistoryCreateRequestDto;
+import com.earnmoneynow.partners.module.tistory.dto.TistoryCreateResponseDto;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
@@ -36,6 +38,18 @@ public class TistoryService {
                 tistoryContentResponseDto = objectMapper.readValue(responseEntity.getBody(), TistoryContentResponseDto.class);
             }
             return tistoryContentResponseDto;
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public TistoryCreateResponseDto createContent(TistoryCreateRequestDto tistoryCreateRequestDto) {
+        String uri = "/write";
+        ResponseEntity<String> responseEntity = webClientService.internalApiRequest(url, uri, tistoryCreateRequestDto);
+
+        try {
+            TistoryCreateResponseDto tistoryCreateResponseDto = objectMapper.readValue(responseEntity.getBody(), TistoryCreateResponseDto.class);
+            return tistoryCreateResponseDto;
         } catch (JsonProcessingException e) {
             throw new RuntimeException(e);
         }
