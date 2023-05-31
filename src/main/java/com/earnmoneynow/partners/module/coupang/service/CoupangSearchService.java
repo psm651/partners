@@ -14,6 +14,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
+
 @RequiredArgsConstructor
 @Service
 @Slf4j
@@ -78,7 +81,7 @@ public class CoupangSearchService {
     public SearchedProductResponseDto getSearchedProduct(ProductRequestDto productRequestDto) {
         String subId = productRequestDto.getSubId();
         String imageSize = productRequestDto.getImageSize();
-        String keyword = productRequestDto.getKeyword();
+        String keyword = URLEncoder.encode(productRequestDto.getKeyword(), StandardCharsets.UTF_8);
         String uri = String.format("/v2/providers/affiliate_open_api/apis/openapi/v1/products/search?keyword=%s&subId=%s&imageSize=%s", keyword, subId, imageSize);
         String authorization = hmacGenerator.generate(GET_METHOD, uri, secretKey, accessKey);
         ResponseEntity<String> responseEntity = webClientService.coupangApiRequest(url, uri, authorization);

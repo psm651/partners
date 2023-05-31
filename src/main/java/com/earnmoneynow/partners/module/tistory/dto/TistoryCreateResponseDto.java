@@ -6,9 +6,14 @@ import lombok.NoArgsConstructor;
 
 @Getter
 @NoArgsConstructor
-@JsonRootName(value = "tistory")
 public class TistoryCreateResponseDto {
-    private String status;
-    private Integer postId;
-    private String url;
+    public static Tistory tistory;
+
+    @Getter
+    @NoArgsConstructor
+    private static class Tistory {
+        private String status;
+        private Integer postId;
+        private String url;
+    }
 }
