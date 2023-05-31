@@ -9,6 +9,7 @@ import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.http.client.utils.URIBuilder;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -80,11 +81,17 @@ public class CoupangSearchService {
 
     public SearchedProductResponseDto getSearchedProduct(ProductRequestDto productRequestDto) {
         String subId = productRequestDto.getSubId();
-        String imageSize = productRequestDto.getImageSize();
-        String keyword = URLEncoder.encode(productRequestDto.getKeyword(), StandardCharsets.UTF_8);
-        String uri = String.format("/v2/providers/affiliate_open_api/apis/openapi/v1/products/search?keyword=%s&subId=%s&imageSize=%s", keyword, subId, imageSize);
-        String authorization = hmacGenerator.generate(GET_METHOD, uri, secretKey, accessKey);
-        ResponseEntity<String> responseEntity = webClientService.coupangApiRequest(url, uri, authorization);
+//        String keyword = URLEncoder.encode(productRequestDto.getKeyword(), StandardCharsets.UTF_8);
+//        String uri = String.format("/v2/providers/affiliate_open_api/apis/openapi/v1/products/search?keyword=%s&subId=%s", keyword, subId);
+
+        String encodedKeyword = URLEncoder.encode(productRequestDto.getKeyword(), StandardCharsets.UTF_8);
+        String URL2 = "/v2/providers/affiliate_open_api/apis/openapi/products/search?keyword=" + productRequestDto.getKeyword() + "&limit=4";
+        String URL = "/v2/providers/affiliate_open_api/apis/openapi/products/search?keyword=" + encodedKeyword + "&limit=4";
+
+
+
+        String authorization = hmacGenerator.generate(GET_METHOD, URL, secretKey, accessKey);
+        ResponseEntity<String> responseEntity = webClientService.coupangApiRequest(url, URL2, authorization);
         log.info(responseEntity.toString());
 
         SearchedProductResponseDto searchedProductResponseDto = null;
